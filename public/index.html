@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO whiteboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas class="whiteboard" ></canvas>
+
+  <div class="colors">
+    <div class="color black"></div>
+    <div class="color red"></div>
+    <div class="color green"></div>
+    <div class="color blue"></div>
+    <div class="color yellow"></div>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-container-fluid">
+      <div class="text-chat-divide"></div>
+      <div class="chat-box"><textarea id="chat-input" placeholder="Make your guess!"></textarea><button class="btn" id="send-chat-btn">Guess</button></div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/main.js"></script>
+</body>
+</html>
