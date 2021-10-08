@@ -8,8 +8,10 @@ app.use(express.static(__dirname + '/public'));
 
 const words = ["apple", "orange", "banana", 'bear']
 
-function randomFrom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)]
+function randomFrom(arr, exclude) {
+  let el = arr[Math.floor(Math.random() * arr.length)]
+
+  return el
 }
 
 function sortObjectByKeys(o) {
@@ -17,8 +19,8 @@ function sortObjectByKeys(o) {
 }
 async function getCurrentUsers() {
   const currentUsers = await io.allSockets();
-  console.log(currentUsers)
-  return(getCurrentUsers)
+  // console.log(currentUsers)
+  return(currentUsers)
 }
 
 let leaders = {}
@@ -29,7 +31,7 @@ function onConnection(socket) {
 
     function newGame() {
         // start new game
-        currentWord = randomFrom(words)
+        currentWord = randomFrom(words, currentWord)
         io.emit('new word', currentWord)
     }
   
@@ -41,7 +43,7 @@ function onConnection(socket) {
 
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
     socket.on('new message', function (username, message) {
-      console.log(message, currentWord)
+      // console.log(message, currentWord)
       io.emit('new message', username, message)
         if (message == currentWord) {
             if (username in leaders) {
