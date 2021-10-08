@@ -10,7 +10,6 @@ const words = ["apple", "orange", "banana", 'bear']
 
 function randomFrom(arr, exclude) {
   let el = arr[Math.floor(Math.random() * arr.length)]
-
   return el
 }
 
@@ -25,20 +24,29 @@ async function getCurrentUsers() {
 
 let leaders = {}
 let currentWord = randomFrom(words)
-let currentDrawer = randomFrom(getCurrentUsers())
+let currentDrawer
 
-function onConnection(socket) {
+async function onConnection(socket) {
+  let users = await getCurrentUsers()
+  // if room first player, become drawer
+  if (users.size == 1) {
+    currentDrawer = socket.id
+  }
 
-    function newGame() {
+    async function newGame() {
         // start new game
         currentWord = randomFrom(words, currentWord)
-        io.emit('new word', currentWord)
+        users = await getCurrentUsers()
+        currentDrawer = randomFrom(Array.from(users))
+        io.emit('new word', {
+          currentWord, currentDrawer
+        })
     }
-  
+
     socket.emit('set current info', {
-      currentWord: currentWord,
-      currentDrawer: currentDrawer,
-      leaders: leaders
+      currentWord,
+      leaders,
+      currentDrawer
     })
 
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));

@@ -108,8 +108,16 @@
     });
 
     socket.on('set current info', (data) => {
-      console.log(data)
+      let drawer = data.currentDrawer
+      //if i am drawer
+      if (drawer == socket.id) {
+        drawer = 'You';
+        $('#chat-container').hide()
+      } else {
+        $('#chat-container').show()
+      }
       $("#current-word").text(data.currentWord)
+      $("#current-drawer").text('Current Drawer: ' + drawer)
     })
 
     socket.on('new message', (username, message) => {
@@ -121,8 +129,9 @@
         `);
     })
 
-    socket.on('new word', (word) => {
-        $('#current-word').text(word)
+    socket.on('new word', (data) => {
+      console.log(data)
+        $('#current-word').text(data['currentWord'])
         context.clearRect(0, 0, canvas.width, canvas.height)
     })
 
