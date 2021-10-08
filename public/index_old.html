@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Socket.IO whiteboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <canvas class="whiteboard" width="500px" height="500px"></canvas>
+  <canvas class="whiteboard" height="1016px" width="990px"></canvas>
 
   <div class="colors">
     <div class="color black"></div>
@@ -18,14 +19,11 @@
 
   <div class="chat-container">
     <div class="chat-container-fluid">
-      <div id="message-container"></div>
       <div class="text-chat-divide"></div>
-      <div class="chat-box"><textarea id="chat-input" placeholder="Make your guess!"></textarea><button class="btn" id="message-send-btn">Guess</button></div>
-      <div>name: <input type="text" id="name"></div>
+      <div class="chat-box"><textarea id="chat-input" placeholder="Make your guess!"></textarea><button class="btn" id="send-chat-btn">Guess</button></div>
     </div>
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/main.js"></script>
 </body>

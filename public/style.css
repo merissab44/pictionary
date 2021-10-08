@@ -13,8 +13,8 @@
    */
   
   .whiteboard {
-    height: 100%;
-    width: 100%;
+    height: 1016px;
+    width: 990px;
     position: absolute;
     left: 0;
     right: 0;
@@ -62,7 +62,7 @@
     display: inline;
   }
 
-  .chat-container {
+  /* .chat-container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -94,4 +94,4 @@
   
   .message-text {
     display: inline;
-  }
+  } */

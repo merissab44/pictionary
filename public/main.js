@@ -4,6 +4,8 @@
 
   var socket = io();
   var canvas = document.getElementsByClassName('whiteboard')[0];
+  console.log(canvas.height)
+  var canvas = document.getElementsByClassName('whiteboard')[0];
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
 
@@ -27,11 +29,6 @@
     colors[i].addEventListener('click', onColorUpdate, false);
   }
 
-  socket.on('drawing', onDrawingEvent);
-
-  window.addEventListener('resize', onResize, false);
-  onResize();
-
   //Takes the color and follows the path of your drawing
   function drawLine(x0, y0, x1, y1, color, emit){
     context.beginPath();
@@ -54,17 +51,6 @@
       color: color
     });
   }
-
-  socket.on('new message', (data) => {
-    let currentChannel = $('.channel-current').text();
-    if(currentChannel == data.channel){
-    $('.message-container').append(`
-    <div class="message">
-    <p class="message-user">${data.sender}:</p>
-    <p class="message-text">${data.message}</p>
-    `);
-    }
-})
 
   function onMouseDown(e){
     drawing = true;
@@ -102,16 +88,26 @@
     };
   }
 
-  function onDrawingEvent(data){
-    var w = canvas.width;
-    var h = canvas.height;
-    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
-  }
+    // add message sender listener
+    $('#message-send-btn').on("click", function (e) {
+        socket.emit("new message", $("#name").val(), $("#chat-input").val())
+    })
 
-  // make the canvas fill its parent
-  function onResize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+    // socket stuff
+    socket.on('drawing', function onDrawingEvent(data){
+        var w = canvas.width;
+        var h = canvas.height;
+        drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+    });
+
+
+    socket.on('new message', (username, message) => {
+        $('#message-container').append(`
+            <div class="message">
+                <span class="message-user">${username}:</span>
+                <span class="message-text">${message}</span>
+            </div>
+        `);
+    })
 
 })();
