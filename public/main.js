@@ -10,7 +10,7 @@
   var context = canvas.getContext('2d');
 
   // store name
-  let name = ''
+  let name
   var current = {
     color: 'black'
   };
@@ -90,6 +90,21 @@
     };
   }
 
+  function updateElements(data) {
+    console.log(data)
+    let drawer = data.currentDrawer
+    //if i am drawer
+    if (drawer == socket.id) {
+      drawer = 'You';
+      $('#chat-container').hide()
+    } else {
+      $('#chat-container').show()
+    }
+    $("#current-word").text(data.currentWord)
+    $("#current-drawer").text('Current Drawer: ' + drawer)
+    context.clearRect(0, 0, canvas.width, canvas.height)
+  }
+
     // add message sender listener
     $('#message-send-btn').on("click", function (e) {
         socket.emit("new message", name, $("#chat-input").val())
@@ -107,18 +122,7 @@
         name = socket.id
     });
 
-    socket.on('set current info', (data) => {
-      let drawer = data.currentDrawer
-      //if i am drawer
-      if (drawer == socket.id) {
-        drawer = 'You';
-        $('#chat-container').hide()
-      } else {
-        $('#chat-container').show()
-      }
-      $("#current-word").text(data.currentWord)
-      $("#current-drawer").text('Current Drawer: ' + drawer)
-    })
+    socket.on('set current info', updateElements)
 
     socket.on('new message', (username, message) => {
         $('#message-container').append(`
@@ -129,11 +133,7 @@
         `);
     })
 
-    socket.on('new word', (data) => {
-      console.log(data)
-        $('#current-word').text(data['currentWord'])
-        context.clearRect(0, 0, canvas.width, canvas.height)
-    })
+    socket.on('new word', updateElements)
 
     socket.on('update leaders', (leaders) => {
       $('#leaderlist').empty()

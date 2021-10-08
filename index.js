@@ -39,7 +39,8 @@ async function onConnection(socket) {
         users = await getCurrentUsers()
         currentDrawer = randomFrom(Array.from(users))
         io.emit('new word', {
-          currentWord, currentDrawer
+          currentWord,
+          currentDrawer
         })
     }
 
@@ -66,6 +67,12 @@ async function onConnection(socket) {
         } else {
         }
     })
+  
+  socket.on('disconnect', function (){
+    if (currentDrawer == socket.id) {
+      newGame()
+    }
+  })
 }
 
 io.on('connection', onConnection);
