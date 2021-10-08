@@ -117,6 +117,7 @@
       $("#current-word").text(data.currentWord)
     } else {
       $('#chat-container').show()
+      $("#current-word").text('')
       removeDrawingListeners()
     }
     $("#current-drawer").text('Current Drawer: ' + drawer)
