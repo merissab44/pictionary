@@ -52,6 +52,7 @@ function onConnection(socket) {
                 leaders[username] = 1
             }
             leaders = sortObjectByKeys(leaders)
+            console.log(leaders)
             io.emit('update leaders', leaders)
             newGame()
         } else {

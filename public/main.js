@@ -115,7 +115,7 @@
     socket.on('new message', (username, message) => {
         $('#message-container').append(`
             <div class="message">
-                <span class="message-user">${username}:</span>
+                <span class="message-user">${username}: </span>
                 <span class="message-text">${message}</span>
             </div>
         `);
@@ -127,7 +127,15 @@
     })
 
     socket.on('update leaders', (leaders) => {
-        console.log(leaders)
+      $('#leaderlist').empty()
+      for (const [name, score] of Object.entries(leaders)) {
+        $('#leaderlist').append(`
+            <div class="leader">
+                <span class="message-user">${name}: </span>
+                <span class="message-text">${score}</span>
+            </div>
+        `)
+      }
     })
 
 })();
