@@ -114,11 +114,11 @@
       drawer = 'You';
       $('#chat-container').hide()
       addDrawingListeners()
+      $("#current-word").text(data.currentWord)
     } else {
       $('#chat-container').show()
       removeDrawingListeners()
     }
-    $("#current-word").text(data.currentWord)
     $("#current-drawer").text('Current Drawer: ' + drawer)
     context.clearRect(0, 0, canvas.width, canvas.height)
   }
