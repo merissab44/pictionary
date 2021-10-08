@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Socket.IO whiteboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <canvas class="whiteboard" width="500px" height="500px"></canvas>
+  <h1 style="text-align:center;" id="current-word"></h1>
+  <div style="text-align:center;">name: <input type="text" id="name"></div>
 
-  <div class="colors">
-    <div class="color black"></div>
-    <div class="color red"></div>
-    <div class="color green"></div>
-    <div class="color blue"></div>
-    <div class="color yellow"></div>
-  </div>
-
-  <div class="chat-container">
-    <div class="chat-container-fluid">
-      <div id="message-container"></div>
-      <div class="text-chat-divide"></div>
-      <div class="chat-box"><textarea id="chat-input" placeholder="Make your guess!"></textarea><button class="btn" id="message-send-btn">Guess</button></div>
-      <div>name: <input type="text" id="name"></div>
+  <div id="bottom-panel">
+    <div class="chat-container">
+      <div class="chat-container-fluid">
+        <div id="message-container"></div>
+        <div class="text-chat-divide"></div>
+        <div class="chat-box"><input id="chat-input" placeholder="Make your guess!"><button class="btn" id="message-send-btn">Guess</button></div>
+      </div>
+    </div>
+  
+    <div>
+      <H1>Leaderboard</H1>
     </div>
   </div>
 

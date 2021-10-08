@@ -6,14 +6,58 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
 
-function onConnection(socket){
+const words = ["apple", "orange", "banana", 'bear']
+
+function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)]
+}
+
+function sortObjectByKeys(o) {
+  return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+}
+async function getCurrentUsers() {
+  const currentUsers = await io.allSockets();
+  console.log(currentUsers)
+  return(getCurrentUsers)
+}
+
+let leaders = {}
+let currentWord = randomFrom(words)
+let currentDrawer = randomFrom(getCurrentUsers())
+
+function onConnection(socket) {
+
+    function newGame() {
+        // start new game
+        currentWord = randomFrom(words)
+        io.emit('new word', currentWord)
+    }
+  
+    socket.emit('set current info', {
+      currentWord: currentWord,
+      currentDrawer: currentDrawer,
+      leaders: leaders
+    })
+
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
     socket.on('new message', function (username, message) {
-        console.log(username, message)
-        socket.emit('new message', username, message)
+      console.log(message, currentWord)
+      io.emit('new message', username, message)
+        if (message == currentWord) {
+            if (username in leaders) {
+                leaders[username] ++
+            } else {
+                leaders[username] = 1
+            }
+            leaders = sortObjectByKeys(leaders)
+            io.emit('update leaders', leaders)
+            newGame()
+        } else {
+        }
     })
 }
 
 io.on('connection', onConnection);
 
 http.listen(port, () => console.log('listening on port ' + port));
+

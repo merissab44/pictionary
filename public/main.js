@@ -9,6 +9,8 @@
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
 
+  // store name
+  let name = ''
   var current = {
     color: 'black'
   };
@@ -90,7 +92,8 @@
 
     // add message sender listener
     $('#message-send-btn').on("click", function (e) {
-        socket.emit("new message", $("#name").val(), $("#chat-input").val())
+        socket.emit("new message", name, $("#chat-input").val())
+        $("#chat-input").val("")
     })
 
     // socket stuff
@@ -100,6 +103,14 @@
         drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     });
 
+    socket.on('connect', function (){
+        name = socket.id
+    });
+
+    socket.on('set current info', (data) => {
+      console.log(data)
+      $("#current-word").text(data.currentWord)
+    })
 
     socket.on('new message', (username, message) => {
         $('#message-container').append(`
@@ -108,6 +119,15 @@
                 <span class="message-text">${message}</span>
             </div>
         `);
+    })
+
+    socket.on('new word', (word) => {
+        $('#current-word').text(word)
+        context.clearRect(0, 0, canvas.width, canvas.height)
+    })
+
+    socket.on('update leaders', (leaders) => {
+        console.log(leaders)
     })
 
 })();
