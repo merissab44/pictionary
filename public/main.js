@@ -16,16 +16,32 @@
   };
   var drawing = false;
 
-  canvas.addEventListener('mousedown', onMouseDown, false);
-  canvas.addEventListener('mouseup', onMouseUp, false);
-  canvas.addEventListener('mouseout', onMouseUp, false);
-  canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false);
   
+  function addDrawingListeners() {
+    canvas.addEventListener('mousedown', onMouseDown, false);
+    canvas.addEventListener('mouseup', onMouseUp, false);
+    canvas.addEventListener('mouseout', onMouseUp, false);
+    canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false);
+    
+  
+    canvas.addEventListener('touchstart', onMouseDown, false);
+    canvas.addEventListener('touchend', onMouseUp, false);
+    canvas.addEventListener('touchcancel', onMouseUp, false);
+    canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
+  }
 
-  canvas.addEventListener('touchstart', onMouseDown, false);
-  canvas.addEventListener('touchend', onMouseUp, false);
-  canvas.addEventListener('touchcancel', onMouseUp, false);
-  canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
+  function removeDrawingListeners() {
+    canvas.removeEventListener('mousedown', onMouseDown, false);
+    canvas.removeEventListener('mouseup', onMouseUp, false);
+    canvas.removeEventListener('mouseout', onMouseUp, false);
+    canvas.removeEventListener('mousemove', throttle(onMouseMove, 10), false);
+    
+  
+    canvas.removeEventListener('touchstart', onMouseDown, false);
+    canvas.removeEventListener('touchend', onMouseUp, false);
+    canvas.removeEventListener('touchcancel', onMouseUp, false);
+    canvas.removeEventListener('touchmove', throttle(onMouseMove, 10), false);
+  }
 
   for (var i = 0; i < colors.length; i++){
     colors[i].addEventListener('click', onColorUpdate, false);
@@ -97,8 +113,10 @@
     if (drawer == socket.id) {
       drawer = 'You';
       $('#chat-container').hide()
+      addDrawingListeners()
     } else {
       $('#chat-container').show()
+      removeDrawingListeners()
     }
     $("#current-word").text(data.currentWord)
     $("#current-drawer").text('Current Drawer: ' + drawer)
